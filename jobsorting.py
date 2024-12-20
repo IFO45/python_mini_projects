@@ -25,7 +25,7 @@ def sortapp(applications, criteria, order="asc"):
                     
     return application_list
 
-def sortprint(job_applications, criteria):
+def sortprint(jobapp, criteria):
     if criteria in ['age', 'experience']:
         order = input("Enter sorting order ('asc' for ascending or 'desc' for descending): ").strip().lower()
         sorted_applications = sortapp(job_applications, criteria, order)
@@ -37,6 +37,6 @@ def sortprint(job_applications, criteria):
         criteria = input("Enter the criteria for sorting (age/experience): ").strip().lower()
         sortprint(job_applications, criteria)
 
-job_applications = getapp()
+jobapp = getapp()
 criteria = input("Enter the criteria for sorting ('age'/'experience'): ").strip().lower()
-sortprint(job_applications, criteria)
+sortprint(jobapp, criteria)

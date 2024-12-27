@@ -6,37 +6,42 @@ def getapp():
         name = input("Name: ")
         age = int(input("Age: "))
         exp = int(input("Years of Experience: "))
-        applications[i] = {"name": name, "age": age, "exp": exp}
+        qualification = input("Qualification: ").strip().lower()
+        applications[i] = {"name": name, "age": age, "exp": exp, "qualification": qualification}
     return applications
 
-def sortapp(applications, criteria, order="asc"):
-    reverse = True if order == "desc" else False
-    application_list = list(applications.items())
-    n = len(application_list)
+def shortlist_candidates(candidates, min_age, required_qualification, min_experience):
+    shortlisted = []
+    rejected = []
+
+    for candidate in candidates.values():  # Iterate through candidate dictionaries
+        if (candidate["age"] >= min_age and 
+            candidate["qualification"] == required_qualification and 
+            candidate["exp"] >= min_experience):
+            shortlisted.append(candidate)
+        else:
+            rejected.append(candidate)
+
+    return shortlisted, rejected
     
-    for i in range(n):
-        for j in range(0, n - i - 1):
-            if reverse:
-                if application_list[j][1][criteria] < application_list[j + 1][1][criteria]:
-                    application_list[j], application_list[j + 1] = application_list[j + 1], application_list[j]
-            else:
-                if application_list[j][1][criteria] > application_list[j + 1][1][criteria]:
-                    application_list[j], application_list[j + 1] = application_list[j + 1], application_list[j]
-                    
-    return application_list
+job_applications = getapp()
 
-def sortprint(jobapp, criteria):
-    if criteria in ['age', 'experience']:
-        order = input("Enter sorting order ('asc' for ascending or 'desc' for descending): ").strip().lower()
-        sorted_applications = sortapp(job_applications, criteria, order)
-        print(f"\nSorted by {criteria.capitalize()} ({'Descending' if order == 'desc' else 'Ascending'}):")
-        for app_id, details in sorted_applications:
-            print(f"ID: {app_id}, Name: {details['name']}, Age: {details['age']}, Experience: {details['exp']} years")
-    else:
-        print("Invalid criteria. Please enter 'age' or 'experience'.")
-        criteria = input("Enter the criteria for sorting (age/experience): ").strip().lower()
-        sortprint(job_applications, criteria)
+print("\nEnter details for shortlisting:")
+min_age = int(input("Min Age: "))
+required_qualification = input("Required Qualification: ").strip().lower()
+min_experience = int(input("Min Experience (years): "))
 
-jobapp = getapp()
-criteria = input("Enter the criteria for sorting ('age'/'experience'): ").strip().lower()
-sortprint(jobapp, criteria)
+shortlisted, rejected = shortlist_candidates(job_applications, min_age, required_qualification, min_experience)
+
+print("\nShortlisted Candidates:")
+for candidate in shortlisted:
+    print(candidate)
+
+print("\nRejected Candidates:")
+for candidate in rejected:
+    print(candidate)
+
+
+print("\nRejected Candidates:")
+for candidate in rejected:
+    print(candidate)
